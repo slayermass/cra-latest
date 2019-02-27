@@ -1,28 +1,32 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, Suspense } from 'react';
+import './App.scss';
+import { Webworkers } from './components/Webworkers';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+const TestComponent = React.lazy(() => import('./TestComponent'));
+
+export const App = () => {
+  const [component, setComponent] = useState("empty");
+  const [count, setCount] = useState(5);
+  
+  return (
+    <div className="App">
+      <button
+        onClick={() =>
+          setComponent(prevComponent =>
+            prevComponent === "test" ? "empty" : "test"
+          )
+        }
+      >
+        change component
+      </button>
+      <button onClick={() => setCount(prevCount => prevCount + 1)}>+++</button>
+      <Suspense fallback={<div>Loading...</div>}>
+        {component === "test" && <TestComponent prop={"test"} count={count} />}
+      </Suspense>
+      <hr />
+      <div>
+        <Webworkers />
       </div>
-    );
-  }
-}
-
-export default App;
+    </div>
+  );
+};
