@@ -1,11 +1,11 @@
 // преобразование в структуру для state
-export const toState = (structure: any) => Object.entries(structure).reduce((a, [key, data]) => {
+export const toState = structure => Object.entries(structure).reduce((a, [key, data]) => {
   a[key] = data.value;
   return a;
 }, {});
 
-
-const numberValidator = (data: string, value) => {
+// принимает на вход только числа
+const numberValidator = (data, value) => {
   if (typeof value !== 'number') {
     return ['Не числовое значение'];
   }
@@ -14,6 +14,10 @@ const numberValidator = (data: string, value) => {
   
   if (data.maxValue && value > data.maxValue) {
     errors.push(`Максимальное значение: ${data.maxValue}`);
+  }
+  
+  if (data.minValue && value < data.minValue) {
+    errors.push(`Минимальное значение: ${data.minValue}`);
   }
   
   return errors;
@@ -38,16 +42,18 @@ const stringValidator = (data, value) => {
   return errors;
 };
 
+// parent - stringValidator
 const emailValidator = (value) => {
   if (typeof value !== 'string') {
     return ['Не строковое значение'];
   }
   
   const errors = [];
+  const trimmedValue = value.trim();
   
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const regExp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  if (!re.test(value.toLowerCase())) {
+  if (!regExp.test(trimmedValue.toLowerCase())) {
     errors.push('Невалидный email');
   }
   
@@ -56,7 +62,7 @@ const emailValidator = (value) => {
 
 
 export const validate = structure => (state) => {
-  // { name: [], ... }
+  // вида { key: [], ... }
   const errors = Object.keys(state).reduce((a, s) => {
     a[s] = [];
     return a;
@@ -64,18 +70,19 @@ export const validate = structure => (state) => {
   
   Object.entries(structure).forEach(([name, data]) => {
     const value = state[name];
+    const pushErrors = e => errors[name].push(e);
     
     switch (data.type) {
       case Number:
-        numberValidator(data, value).forEach(e => errors[name].push(e));
+        numberValidator(data, value).forEach(pushErrors);
         break;
       
       case String:
-        stringValidator(data, value).forEach(e => errors[name].push(e));
+        stringValidator(data, value).forEach(pushErrors);
         break;
   
       case 'email':
-        emailValidator(value).forEach(e => errors[name].push(e));
+        emailValidator(value).forEach(pushErrors);
         break;
         
       default:
