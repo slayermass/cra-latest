@@ -1,4 +1,5 @@
 // преобразование в структуру для state
+// TODO переделать свойства на префикс v- и удалять только их
 export const toState = structure => Object.entries(structure).reduce((a, [key, data]) => {
   a[key] = data.value;
   return a;
@@ -92,3 +93,12 @@ export const validate = structure => (state) => {
   
   return errors;
 };
+
+/**
+ * проверка, есть ли ошибки по данному полю
+ * const hasError = checkHasError(errors);
+ * hasError('name')
+ *
+ * @returns boolean
+ */
+export const checkHasError = errors => attr => errors[attr] && errors[attr].length > 0;

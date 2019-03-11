@@ -1,6 +1,7 @@
 import React, { useState, Suspense } from 'react';
 import './App.scss';
 import { Webworkers } from '../webworkers/Webworkers';
+import { FormComponent } from '../MaterialUI/FormComponent';
 
 const TestComponent = React.lazy(() => import('../Test/TestComponent'));
 
@@ -27,6 +28,7 @@ export const App = () => {
       <div>
         <Webworkers />
       </div>
+      <FormComponent />
     </div>
   );
 };
