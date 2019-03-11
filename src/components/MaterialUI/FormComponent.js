@@ -18,12 +18,21 @@ export class FormComponent extends PureComponent {
       type: 'email',
       value: '',
     },
+    name: {
+      type: String,
+      value: '',
+      maxLength: 20,
+      minLength: 1,
+    },
   };
+  
+  // можно хранить ссылку
+  validator = validate(this.stateStructure);
   
   // стейт как он есть
   state = {
-    ...toState(this.stateStructure), // email: ''
-    errors: [],
+    ...toState(this.stateStructure), // email: '', name: ''
+    errors: {},
   };
   
   onChangeState = attr => ({ target: { value } }) => {
@@ -34,7 +43,7 @@ export class FormComponent extends PureComponent {
   };
   
   onSubmit = (e) => {
-    const errors = validate(this.stateStructure)(this.state);
+    const errors = this.validator(this.state);
     
     if (errors) {
       this.setState({
@@ -48,7 +57,7 @@ export class FormComponent extends PureComponent {
   };
   
   render() {
-    const { email, errors } = this.state;
+    const { email, name, errors } = this.state;
     const hasError = checkHasError(errors);
     
     return (
@@ -57,6 +66,18 @@ export class FormComponent extends PureComponent {
           Тест формы
         </Typography>
         <form onSubmit={this.onSubmit}>
+          <FormControl margin="normal" required fullWidth error={hasError('name')}>
+            <InputLabel htmlFor="name">Строка от 1 до 20</InputLabel>
+            <Input value={name} name="name" autoComplete="off" onChange={this.onChangeState('name')} />
+            {
+              hasError('name')
+              && (
+                <FormHelperText>
+                  {errors['name']}
+                </FormHelperText>
+              )
+            }
+          </FormControl>
           <FormControl margin="normal" required fullWidth error={hasError('email')}>
             <InputLabel htmlFor="email">Email Address</InputLabel>
             <Input value={email} name="email" autoComplete="off" onChange={this.onChangeState('email')} />

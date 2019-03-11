@@ -38,7 +38,7 @@ describe('--- test formValidator ---', () => {
     });
   });
   
-  it('should return no erros', () => {
+  it('should return no errors', () => {
     // без ошибок
     const stateWithoutErrors = toState(structure);
     stateWithoutErrors.name = new Array(20).fill('8').join('');
