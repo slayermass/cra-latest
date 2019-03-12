@@ -1,3 +1,5 @@
+// @flow
+
 import React, { PureComponent } from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -6,12 +8,23 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import './styles.scss';
 import Button from '@material-ui/core/Button';
-import { checkHasError, toState, validate } from '../../helpers/validator/formValidator';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import { areErrors, checkHasError, toState, validate } from '../../helpers/validator/formValidator';
+import { CustomFormHelperText } from '../../helpers/CustomFormHelperText';
 
 const block = 'form-component';
 
-export class FormComponent extends PureComponent {
+type Props = {}
+
+type State = {
+  email: string,
+  name: string,
+  errors: {
+    email?: Array<string>,
+    name?: Array<string>,
+  },
+}
+
+export class FormComponent extends PureComponent<Props, State> {
   // начальная структура
   stateStructure = {
     email: {
@@ -26,7 +39,7 @@ export class FormComponent extends PureComponent {
     },
   };
   
-  // можно хранить ссылку
+  // можно хранить ссылку на валидатор
   validator = validate(this.stateStructure);
   
   // стейт как он есть
@@ -35,30 +48,35 @@ export class FormComponent extends PureComponent {
     errors: {},
   };
   
-  onChangeState = attr => ({ target: { value } }) => {
+  onChangeState = (attr: string) => ({ currentTarget: { value } }: SyntheticInputEvent<HTMLInputElement>) => {
     this.setState({
       ...this.state,
       [attr]: value
-    }, this.onSubmit);
+    }, this.onValidate);
   };
   
-  onSubmit = (e) => {
+  onSubmit = (e: SyntheticEvent<HTMLFormElement>): void => {
+    if (this.onValidate() === 0) {
+      console.log('form submited. state: ', this.state);
+    }
+    
+    e.preventDefault();
+  };
+  
+  onValidate = (): number => {
     const errors = this.validator(this.state);
     
-    if (errors) {
-      this.setState({
-        errors,
-      });
-    }
-    
-    if (e) { // вызов императивно
-      e.preventDefault();
-    }
+    this.setState({
+      errors,
+    });
+
+    return areErrors(errors);
   };
   
   render() {
     const { email, name, errors } = this.state;
     const hasError = checkHasError(errors);
+    const FormHelperComponent = CustomFormHelperText(errors);
     
     return (
       <Paper className={block}>
@@ -69,26 +87,12 @@ export class FormComponent extends PureComponent {
           <FormControl margin="normal" required fullWidth error={hasError('name')}>
             <InputLabel htmlFor="name">Строка от 1 до 20</InputLabel>
             <Input value={name} name="name" autoComplete="off" onChange={this.onChangeState('name')} />
-            {
-              hasError('name')
-              && (
-                <FormHelperText>
-                  {errors['name']}
-                </FormHelperText>
-              )
-            }
+            <FormHelperComponent attr="name" />
           </FormControl>
           <FormControl margin="normal" required fullWidth error={hasError('email')}>
             <InputLabel htmlFor="email">Email Address</InputLabel>
             <Input value={email} name="email" autoComplete="off" onChange={this.onChangeState('email')} />
-            {
-              hasError('email')
-              && (
-                <FormHelperText>
-                  {errors['email']}
-                </FormHelperText>
-              )
-            }
+            <FormHelperComponent attr="email" />
           </FormControl>
           <Button
             type="submit"
