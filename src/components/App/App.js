@@ -3,15 +3,18 @@ import './App.scss';
 import { Webworkers } from '../webworkers/Webworkers';
 import { FormComponent } from '../MaterialUI/FormComponent';
 import { SetInterval } from '../SetInterval/SetInterval';
+import { RxjsComponent } from '../Rxjs/RxjsComponent';
 
 const TestComponent = React.lazy(() => import('../Test/TestComponent'));
 
 export const App = () => {
   const [component, setComponent] = useState("empty");
   const [count, setCount] = useState(5);
-  
+
   return (
     <div className="App">
+      <RxjsComponent />
+      <hr />
       <button
         onClick={() =>
           setComponent(prevComponent =>
