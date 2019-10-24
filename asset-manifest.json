@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/bench/static/css/main.22939f27.chunk.css",
-    "main.js": "/bench/static/js/main.6665e47d.chunk.js",
-    "main.js.map": "/bench/static/js/main.6665e47d.chunk.js.map",
-    "runtime~main.js": "/bench/static/js/runtime~main.c59dcdcd.js",
-    "runtime~main.js.map": "/bench/static/js/runtime~main.c59dcdcd.js.map",
-    "static/js/2.97b8faa8.chunk.js": "/bench/static/js/2.97b8faa8.chunk.js",
-    "static/js/2.97b8faa8.chunk.js.map": "/bench/static/js/2.97b8faa8.chunk.js.map",
-    "static/js/3.98f2015e.chunk.js": "/bench/static/js/3.98f2015e.chunk.js",
-    "static/js/3.98f2015e.chunk.js.map": "/bench/static/js/3.98f2015e.chunk.js.map",
-    "index.html": "/bench/index.html",
-    "precache-manifest.e1bb0f721ccf24c20d52a5ec2364c75e.js": "/bench/precache-manifest.e1bb0f721ccf24c20d52a5ec2364c75e.js",
-    "service-worker.js": "/bench/service-worker.js",
-    "static/css/main.22939f27.chunk.css.map": "/bench/static/css/main.22939f27.chunk.css.map"
+    "main.css": "/cra-latest/static/css/main.22939f27.chunk.css",
+    "main.js": "/cra-latest/static/js/main.6665e47d.chunk.js",
+    "main.js.map": "/cra-latest/static/js/main.6665e47d.chunk.js.map",
+    "runtime~main.js": "/cra-latest/static/js/runtime~main.1166bce0.js",
+    "runtime~main.js.map": "/cra-latest/static/js/runtime~main.1166bce0.js.map",
+    "static/js/2.97b8faa8.chunk.js": "/cra-latest/static/js/2.97b8faa8.chunk.js",
+    "static/js/2.97b8faa8.chunk.js.map": "/cra-latest/static/js/2.97b8faa8.chunk.js.map",
+    "static/js/3.98f2015e.chunk.js": "/cra-latest/static/js/3.98f2015e.chunk.js",
+    "static/js/3.98f2015e.chunk.js.map": "/cra-latest/static/js/3.98f2015e.chunk.js.map",
+    "index.html": "/cra-latest/index.html",
+    "precache-manifest.17160919d770359081c11cd0294cb018.js": "/cra-latest/precache-manifest.17160919d770359081c11cd0294cb018.js",
+    "service-worker.js": "/cra-latest/service-worker.js",
+    "static/css/main.22939f27.chunk.css.map": "/cra-latest/static/css/main.22939f27.chunk.css.map"
   }
 }
